@@ -62,8 +62,8 @@ broker:
   serviceType: ClusterIP
 
   config:
-    DRUID_XMX: 312m
-    DRUID_XMS: 312m
+    DRUID_XMX: 512m
+    DRUID_XMS: 512m
     DRUID_MAXDIRECTMEMORYSIZE: 400m
     druid_processing_buffer_sizeBytes: '50000000'
     druid_processing_numMergeBuffers: 2
@@ -186,8 +186,8 @@ historical:
   serviceType: ClusterIP
 
   config:
-    DRUID_XMX: 512m
-    DRUID_XMS: 512m
+    DRUID_XMX: 412m
+    DRUID_XMS: 412m
     DRUID_MAXDIRECTMEMORYSIZE: 400m
     druid_processing_buffer_sizeBytes: '50000000'
     druid_processing_numMergeBuffers: 2
