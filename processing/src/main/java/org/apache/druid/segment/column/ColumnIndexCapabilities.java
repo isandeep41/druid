@@ -17,38 +17,27 @@
  * under the License.
  */
 
-package org.apache.druid.sql.calcite.run;
+package org.apache.druid.segment.column;
 
-import org.apache.druid.sql.calcite.external.ExternalDataSource;
+import org.apache.druid.query.filter.ColumnIndexSelector;
 
 /**
- * Arguments to {@link QueryFeatureInspector#feature(QueryFeature)}.
+ * Sort of like {@link ColumnCapabilities}, except for indexes supplied by {@link ColumnIndexSelector}, provides
+ * information for how query processing may use indexes.
  */
-public enum QueryFeature
+public interface ColumnIndexCapabilities
 {
   /**
-   * Queries of type {@link org.apache.druid.query.timeseries.TimeseriesQuery} are usable.
+   * Indicates if an index can be inverted for use with a 'NOT' filter. Some types of indexes may not be invertible,
+   * such as those which provide false positive matches.
    */
-  CAN_RUN_TIMESERIES,
+  boolean isInvertible();
 
   /**
-   * Queries of type {@link org.apache.druid.query.topn.TopNQuery} are usable.
+   * Indicates if an index is an exact match, or should also be post-filtered with a value matcher. Filters which
+   * are not an exact match must always use a value matcher as a post-filter, even if they have an index.
    */
-  CAN_RUN_TOPN,
+  boolean isExact();
 
-  /**
-   * Queries can use {@link ExternalDataSource}.
-   */
-  CAN_READ_EXTERNAL_DATA,
-
-  /**
-   * Scan queries can use {@link org.apache.druid.query.scan.ScanQuery#getOrderBys()} that are based on something
-   * other than the "__time" column.
-   */
-  SCAN_CAN_ORDER_BY_NON_TIME,
-
-  /**
-   * Queries of type {@link org.apache.druid.query.timeboundary.TimeBoundaryQuery} are usable.
-   */
-  CAN_RUN_TIME_BOUNDARY
+  ColumnIndexCapabilities merge(ColumnIndexCapabilities other);
 }
